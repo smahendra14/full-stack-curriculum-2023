@@ -13,13 +13,32 @@
       <div>
           <label for="item">Enter a new item:</label>
           <input type="text" name="item" id="item">
-          <button>Add item</button>
+          <button onclick="createListItem()">Add item</button>
       </div>
 
       <ul id="Shopping-List"></ul>
     </div>
 
     <script>
+
+      // pull localStorage into a list 
+      let shoppingList = JSON.parse(localStorage.getItem("shoppingList"));
+
+      // handle case where shopping list is null 
+      if (!shoppingList) {
+        shoppingList = [];
+      } else {
+        shoppingList.forEach((item) => {
+          addItem(item);
+        })
+      }
+
+      function createListItem() {
+        const input = document.querySelector("#item");
+        addItem(input.value);
+        input.value = "";
+        input.focus();
+      }
 
       //conveniently done for you!
       function addItem(text) {
@@ -39,6 +58,25 @@
         li.appendChild(span);
         li.appendChild(deleteButton);
         li.appendChild(saveButton);
+
+        // delete button
+        deleteButton.addEventListener("click", () => {
+          list.removeChild(li);
+          shoppingList = shoppingList.filter((item) => item != span.innerText);
+          localStorage.setItem("shoppingList", JSON.stringify(shoppingList));
+        })
+
+        saveButton.addEventListener("click", () => {
+          
+          const itemExists = shoppingList.some((item => item === text));
+          if (!itemExists) {
+            // update the list 
+            shoppingList.push(text);
+            // actually set localStorage
+            localStorage.setItem("shoppingList", JSON.stringify(shoppingList));
+          } 
+
+        })
         
       }
 
