@@ -2,6 +2,10 @@
 <html>
     <head>
         <style>
+            .mainContainer {
+                border-top: 5px solid grey;
+                background-color: rgba(243, 243, 243, 0.781);
+            }
             .headerContainer {
                 display: flex;
                 flex-direction: row;
@@ -10,11 +14,17 @@
                 margin-right: 10%;
                 align-items: center;
             }
+            .headerInfo {
+                margin-right: 10px;
+            }
             .header {
             }
             #pdfbutton {
-                background-color: black;
+                background-color: rgb(145, 145, 145);
                 color: white;
+                border: none;
+                padding: 5px;
+                padding-right: 50px;
             }
             .row {
                 display: flex;
@@ -31,17 +41,41 @@
             .columnContent {
                 display: flex;
                 flex-direction: row;
+            }
+            .column {
+                flex: 1;
+            }
+            .technicalText {
+                
+            }
+            .contentRow {
+                display: flex;
+                flex-direction: row;
+            }
+            .contentColumn {
+                flex: 1;
+            }
+            .experienceHeaderContainer {
+                display: flex;
+                flex-direction: row;
                 justify-content: space-between;
+            }
+            .experienceHeaderRole {
+                
+            }
+            .experienceHeaderDate {
             }
 
         </style>
 
     </head>
     <body>
+        <div class="mainContainer">
+        
         <div class="headerContainer">
             <span class="header">
                 <h1 id="name">SATVIK MAHENDRA</h1>
-                <h3 id="title">STUDENT</h3>
+                <h3 id="title"><i>STUDENT</i></h3>
             </span>
             <span class="headerInfo">
                 <button id="pdfbutton">
@@ -58,7 +92,7 @@
         <hr style="margin-left: 10%; margin-right: 10%;">
         <div class="row">
             <span class="label">
-                <h3 class="labelText">Profile</h3>
+                <h3 class="labelText"><i>Profile</i></h3>
             </span>
             <span class="content">
                 <p>Progressively evolve cross platform...</p>
@@ -67,7 +101,7 @@
         <hr style="margin-left: 10%; margin-right: 10%;">
         <div class="row">
             <span class="label">
-                <h3 class="labelText">Skills</h3>
+                <h3 class="labelText"><i>Skills</i></h3>
             </span>
             <span class="content">
                 <span class="columnContent">
@@ -90,20 +124,84 @@
         <hr style="margin-left: 10%; margin-right: 10%;">
         <div class="row">
             <span class="label">
-                <h3 class="labelText">Technical</h3>
+                <h3 class="labelText"><i>Technical</i></h3>
             </span>
             <span class="content">
+                <span class="contentRowContainer">
+                    <div class="contentRow">
+                        <span class="contentColumn">
+                            <h5 class="technicalText">XHTML</h5>
+                        </span>
+                        <span class="contentColumn">
+                            <h5>Jquery</h5>
+                        </span>
+                        <span class="contentColumn">
+                            <h5>OS X</h5>
+                        </span>
+                    </div>
+                    <hr>
+                    <div class="contentRow">
+                        <span class="contentColumn">
+                            <h5>CSS</h5>
+                        </span>
+                        <span class="contentColumn">
+                            <h5>PHP</h5>
+                        </span>
+                        <span class="contentColumn">
+                            <h5>Windows XP/Vista</h5>
+                        </span>
+                    </div>
+                    <hr>
+                    <div class="contentRow">
+                        <span class="contentColumn">
+                            <h5>Javascript</h5>
+                        </span>
+                        <span class="contentColumn">
+                            <h5>CVS / Subversion</h5>
+                        </span>
+                        <span class="contentColumn">
+                            <h5>Linux</h5>
+                        </span>
+                    </div>
+                </span>
 
             </span>
         </div>
         <hr style="margin-left: 10%; margin-right: 10%;">
         <div class="row">
             <span class="label">
-                <h3 class="labelText">Experience</h3>
+                <h3 class="labelText"><i>Experience</i></h3>
             </span>
             <span class="content">
+                <span class="experienceHeaderContainer">
+                    <span class="experienceHeaderRole">
+                        <h3>Facebook</h3>
+                        <h5>Senior Interface Designer</h5>
+                    </span>
+                    <span class="experienceHeaderDate">
+                        <h4>2005-2007</h4>
+                    </span>
+                </span>
+                <span>
+                    <p>Intrinsically enable optimal core competencies through corporate relationships. 
+                        Phosfluorescently...</p>
+                </span>
+                <hr>
+                <span class="experienceHeaderContainer">
+                    <span class="experienceHeaderRole">
+                        <h3>Apple</h3>
+                        <h5>Junior Interface Designer</h5>
+                    </span>
+                    <span class="experienceHeaderDate">
+                        <h4>2005-2007</h4>
+                    </span>
+                </span>
+                <span>
+                    <p>Progressively reconceptualize multifunctional "outside the box" thinking through inexpensive methods...</p>
+                </span>
 
             </span>
+        </div>
         </div>
     </body>
         
