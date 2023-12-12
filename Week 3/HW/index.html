@@ -87,7 +87,7 @@
 		}
 
 		// function that is called whenever a city has been selected
-		function selectCity(fullName, name, state, lat, lon) {
+		async function selectCity(fullName, name, state, lat, lon) {
 			// hides the search-results-list since it is not needed right now
 			document.querySelector('#search-results-list').className = 'hidden'
 			// sets the global city variable
@@ -102,6 +102,85 @@
 			//printing the city object to the console
 			console.log(city);
             // BEGIN CODING HERE
+			// call api to get current air quality
+
+			// call weather API to get five day forecast
+			let forecastAPICall = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${apiKey}&units=imperial`;
+			let forecastResponse = await fetch(forecastAPICall);
+			let forecastData = await forecastResponse.json();
+			console.log(forecastData);
+			// stores current day's current temperature
+			let currentWeather = forecastData.list[0].main.temp;
+			// stores the current day + 5 future days max temperature
+			let upcomingMaxWeather = [];
+			// stores the current day + 5 future day's min temperature
+			let upcomingMinWeather = [];
+			let weatherIcons = [];
+			for (i = 0; i < 6; i++) {
+				upcomingMaxWeather.push(forecastData.list[i].main.temp_max);
+				upcomingMinWeather.push(forecastData.list[i].main.temp_min);
+				weatherIcons.push(forecastData.list[i].weather[0].icon);
+			}
+			renderWeatherData(city, currentWeather, upcomingMaxWeather, upcomingMinWeather, weatherIcons);
+		}
+		function renderWeatherData(city, currentWeather, upcomingMaxWeather, upcomingMinWeather, weatherIcons) {
+			
+			// clear the current weather data being displayed
+			while(document.querySelector('#weather-container').firstChild) {
+				document.querySelector('#weather-container').removeChild(document.querySelector('#weather-container').firstChild);
+			}
+			
+			const date = document.createElement('h5');
+			date.innerText = formatDate();
+			document.querySelector('#weather-container').appendChild(date);
+
+			const locationHeader = document.createElement('h3');
+			locationHeader.innerText = "Weather for " + city.fullName;
+			document.querySelector('#weather-container').appendChild(locationHeader);
+
+			const currentWeatherInfoContainer = document.createElement('span');
+			let currWeather = document.createElement('h1');
+			currWeather.innerText = currentWeather + "°";
+			currentWeatherInfoContainer.appendChild(currWeather);
+
+			let weatherIcon = document.createElement('img');
+			weatherIcon.setAttribute('id', 'currentWeatherIcon');
+			weatherIcon.setAttribute('src', 'icons\\' + weatherIcons[0] + '.svg');
+			weatherIcon.setAttribute('alt', "an icon showing the current weather conditions");
+			currentWeatherInfoContainer.appendChild(weatherIcon);
+
+			document.querySelector('#weather-container').appendChild(currentWeatherInfoContainer);
+			renderForecastCards(weatherIcons, upcomingMinWeather, upcomingMaxWeather);
+
+		}
+
+
+		function renderForecastCards(weatherIcons, upcomingMinWeather, upcomingMaxWeather) {
+			let weatherCardContainer = document.createElement('div');
+			weatherCardContainer.setAttribute('id', 'weatherCardContainer');
+			document.querySelector('#weather-container').appendChild(weatherCardContainer);
+			for (i = 1; i < 6; i++) {
+				let weatherCard = document.createElement('span');
+				weatherCard.setAttribute('class', 'weatherCard')
+				weatherCardContainer.appendChild(weatherCard);
+
+				let date = formatDate(i);
+				let cardDate = document.createElement('h4');
+				cardDate.setAttribute('class', 'cardDate');
+				cardDate.innerText = date;
+				weatherCard.appendChild(cardDate);
+
+				let weatherIcon = document.createElement('img');
+				weatherIcon.setAttribute('class', 'forecastWeatherIcon');
+				weatherIcon.setAttribute('src', 'icons\\' + weatherIcons[i] + '.svg');
+				weatherIcon.setAttribute('alt', "an icon showing the current weather conditions");
+				weatherCard.appendChild(weatherIcon);
+
+				let forecastWeather = document.createElement('h4');
+				forecastWeather.innerText = upcomingMinWeather[i] + "° to " + upcomingMaxWeather[i] + "°"; 
+				weatherCard.appendChild(forecastWeather);
+
+			}
 		}
 	</script>
 </html>

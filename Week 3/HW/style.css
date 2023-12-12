@@ -65,4 +65,27 @@
     font-weight: bold;
     cursor: pointer;
   }
+
+  #currentWeatherIcon {
+    height: 50px;
+    width: 50px;
+  }
+
+  #weatherCardContainer {
+    display: flex;
+    flex-direction: row;
+  }
+
+  .weatherCard {
+    flex: 1;
+    background-color: white;
+    margin: 5px;
+    align-items: "center";
+    justify-content: "center";
+    padding: 10px;
+  }
+
+  .forecastWeatherIcon {
+    height: 75px;
+  }
   
