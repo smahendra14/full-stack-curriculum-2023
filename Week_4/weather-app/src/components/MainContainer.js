@@ -73,6 +73,9 @@ useEffect( () => {
       console.log("error fetching data!");
     })
  }, [props.selectedCity]);
+
+ // maybe use a useEffect to prevent stuff from happening until selectedCity is now defined
+ 
   
   return (
     <div id="main-container">
