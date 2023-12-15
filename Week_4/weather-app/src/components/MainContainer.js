@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "../styles/MainContainer.css"; // Import the CSS file for MainContainer
+import WeatherCard from "./WeatherCard";
 
 function MainContainer(props) {
 
@@ -28,6 +29,10 @@ function MainContainer(props) {
   (e.g., 'weather') and its corresponding setter function (e.g., 'setWeather'). The initial state can be 
   null or an empty object.
   */
+
+  const [weather, setWeather] = useState(null);
+  let lat = props.selectedCity ? props.selectedCity.lat : 0;
+  let lon = props.selectedCity ? props.selectedCity.lon : 0;
   
   
   /*
@@ -43,7 +48,31 @@ function MainContainer(props) {
   After fetching the data, use the 'setWeather' function from the 'useState' hook to set the weather data 
   in your state.
   */
-  
+useEffect( () => {
+  fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${props.apiKey}&units=imperial`)
+    .then((response) => response.json())
+    .then((forecastData) => {
+      let upcomingMaxWeatherData = [];
+		  let upcomingMinWeatherData = [];
+      let weatherIconsInfo = [];
+		  for (let i = 0; i < 6; i++) {
+        upcomingMaxWeatherData.push(forecastData.list[i].main.temp_max);
+		  	upcomingMinWeatherData.push(forecastData.list[i].main.temp_min);
+		  	weatherIconsInfo.push(forecastData.list[i].weather[0].icon);
+      }
+      let weatherData = {
+        currentWeather: forecastData.list[0].main.temp,
+        upcomingMaxWeather: upcomingMaxWeatherData,
+        upcomingMinWeather: upcomingMinWeatherData,
+        weatherIcons: weatherIconsInfo,
+      }
+      setWeather(weatherData);
+      console.log(weatherData);
+    })
+    .catch(() => {
+      console.log("error fetching data!");
+    })
+ }, [props.selectedCity]);
   
   return (
     <div id="main-container">
@@ -59,6 +88,12 @@ function MainContainer(props) {
         This is a good section to play around with React components! Create your own - a good example could be a WeatherCard
         component that takes in props, and displays data for each day of the week.
         */}
+        {weather && 
+          <WeatherCard></WeatherCard>
+
+        }
+        
+        <p> {props.selectedCity} </p>
       </div>
     </div>
   );
