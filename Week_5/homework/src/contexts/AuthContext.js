@@ -19,10 +19,8 @@ export function AuthProvider({ children }) {
     const [currentUser, setCurrentUser] = useState(() => JSON.parse(localStorage.getItem('user')));
     const [loginError, setLoginError] = useState(null);
 
-    const VALID_USERNAME = "admin"
-    const VALID_PASSWORD = "foobar"
-    
-    
+    const VALID_USERNAME = "newUser"
+    const VALID_PASSWORD = "racecar"
 
     // Login function that validates the provided username and password.
     const login = (username, password) => {

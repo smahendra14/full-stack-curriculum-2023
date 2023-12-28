@@ -3,9 +3,8 @@ import { AppBar, Toolbar, Typography, Button } from "@mui/material";
 import { useAuth } from "../contexts/AuthContext";
 
 function Header() {
-  const { currentUser, logout } = useAuth();
+  const { currentUser, logout } = useAuth(); // extracting what we want from AuthContext
   
-
   return (
     <AppBar
       position="static"
@@ -19,6 +18,7 @@ function Header() {
       }}
     >
       <Toolbar>
+        {/* Typography is MaterialUI equivalent to Text */}
         <Typography variant="h4" sx={{ flexGrow: 1 }} fontWeight='bold'>
           {currentUser ? `${currentUser.username}'s To-Do List` : "Guest's To-Do List"}
         </Typography>

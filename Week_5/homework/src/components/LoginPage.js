@@ -92,7 +92,7 @@ function LoginPage() {
         {/* TODO: Display Login Error if it exists */}
         {
           loginError && (
-            <Alert severity="error" sx={{ mt: 2}}>
+            <Alert severity="error" sx={{ mt: 2 }}>
               {loginError}
             </Alert>
           )

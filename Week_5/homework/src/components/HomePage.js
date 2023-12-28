@@ -25,52 +25,81 @@ export default function HomePage() {
       // kick them out 
       navigate("/login");
     }
+    getTasks();
   }, [currentUser])
+
+  
 
 
   // State to hold the list of tasks.
   const [tasks, setTasks] = useState([
     // Sample tasks to start with.
-    { name: "create a todo app", finished: false },
-    { name: "wear a mask", finished: false },
-    { name: "play roblox", finished: false },
-    { name: "be a winner", finished: true },
-    { name: "become a tech bro", finished: true },
   ]);
-
   // State for the task name being entered by the user.
   const [taskName, setTaskName] = useState("");
 
   // TODO: Support retrieving your todo list from the API.
   // Currently, the tasks are hardcoded. You'll need to make an API call
   // to fetch the list of tasks instead of using the hardcoded data.
+  async function getTasks() {
+    let apiCall = `https://tpeo-todo.vercel.app/tasks/${currentUser.username}`
+    const response = await fetch(apiCall);
+    const tasks = await response.json();
+    setTasks(tasks);
+  }
 
-  function addTask() {
+
+  async function addTask() {
     // Check if task name is provided and if it doesn't already exist.
-    if (taskName && !tasks.some((task) => task.name === taskName)) {
+    if (taskName && !tasks.some((task) => task.task === taskName)) {
 
       // TODO: Support adding todo items to your todo list through the API.
       // In addition to updating the state directly, you should send a request
       // to the API to add a new task and then update the state based on the response.
 
-      setTasks([...tasks, { name: taskName, finished: false }]);
+      // make api call 
+      let apiCall = `https://tpeo-todo.vercel.app/tasks`;
+      let taskData = {
+        "user": currentUser.username,
+        "task": taskName,
+        "finished": false,
+      }
+      let apiBody = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(taskData),
+      }
+      const response = await fetch(apiCall, apiBody);
+      const data = await response.json();
+      const newID = data.id;
+      setTasks([...tasks, { id: newID, task: taskName, finished: false, user: currentUser.username }]);
       setTaskName("");
-    } else if (tasks.some((task) => task.name === taskName)) {
+    } else if (tasks.some((task) => task.task === taskName)) {
       alert("Task already exists!");
     }
   }
 
   // Function to toggle the 'finished' status of a task.
-  function updateTask(name) {
+  async function updateTask(name) {
     setTasks(
       tasks.map((task) =>
-        task.name === name ? { ...task, finished: !task.finished } : task
+        task.task === name ? { ...task, finished: !task.finished } : task
       )
     );
 
     // TODO: Support removing/checking off todo items in your todo list through the API.
     // Similar to adding tasks, when checking off a task, you should send a request
     // to the API to update the task's status and then update the state based on the response.
+    let taskID = "";
+    for (let i = 0; i < tasks.length; i++) {
+      if (tasks[i].task === name) {
+        taskID = tasks[i].id;
+      }
+    }
+    let apiCall = `https://tpeo-todo.vercel.app/tasks/${taskID}`
+    await fetch(apiCall, {method: 'DELETE'});
   }
 
   // Function to compute a message indicating how many tasks are unfinished.
@@ -140,14 +169,14 @@ export default function HomePage() {
             <List sx={{ marginTop: 3 }}>
               {tasks.map((task) => (
                 <ListItem
-                  key={task.name}
+                  key={task.task} 
                   dense
-                  onClick={() => updateTask(task.name)}
+                  onClick={() => updateTask(task.task)}
                 >
                   <Checkbox
                     checked={task.finished}
                   />
-                  <ListItemText primary={task.name} />
+                  <ListItemText primary={task.task} />
                 </ListItem>
               ))}
             </List>
